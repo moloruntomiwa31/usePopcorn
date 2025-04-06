@@ -57,7 +57,7 @@ export default function App() {
     const fetchMovies = async () => {
       try {
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
         );
         const data = await res.json();
         if (data.Search) {
