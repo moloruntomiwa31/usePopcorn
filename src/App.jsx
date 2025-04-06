@@ -63,7 +63,7 @@ export default function App() {
         if (data.Search) {
           const updatedMovies = data.Search.map((movie) => ({
             ...movie,
-            id: Math.random() * 1000, // Generate unique ID
+            id: Math.random() * 1000, 
             watched: false,
           }));
           setMovies(updatedMovies);
