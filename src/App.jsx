@@ -10,12 +10,15 @@ const KEY = "9b8d44a4";
 
 export default function App() {
   // State variables
-  const [query, setQuery] = useState("avengers");
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const watchedMovies = movies.filter((movie) => movie.watched);
+  const [watchedMovies, setWatchedMovies] = useState(() => {
+    const storedMovies = localStorage.getItem("watchedMovies");
+    return storedMovies ? JSON.parse(storedMovies) : [];
+  });
   const [activeMovie, setActiveMovie] = useState(null);
   const [movieRating, setMovieRating] = useState(activeMovie?.userRating || 0);
   // Reset movieRating when activeMovie changes
@@ -48,8 +51,20 @@ export default function App() {
         movie.id === id ? { ...movie, watched: watchedStatus } : movie
       )
     );
+    if (watchedStatus) {
+      const movieToWatched = movies.find((movie) => movie.id === id);
+      setWatchedMovies((prevWatched) => [...prevWatched, movieToWatched]);
+    } else {
+      setWatchedMovies((prevWatched) =>
+        prevWatched.filter((movie) => movie.id !== id)
+      );
+    }
     setActiveMovie(null);
   };
+
+  useEffect(() => {
+    localStorage.setItem("watchedMovies", JSON.stringify(watchedMovies));
+  }, [watchedMovies]);
 
   //fetch movies on render
   useEffect(() => {
@@ -75,7 +90,6 @@ export default function App() {
       }
     };
     fetchMovies();
-    
   }, [query]);
 
   return (

@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Navbar({ result, onSearchQuery }) {
   const [search, setSearch] = useState("");
+  const searchRef = useRef(null);
+  useEffect(() => {
+    searchRef.current.focus();
+  }, []);
 
   function handleChange(e) {
     setSearch(e.target.value);
@@ -18,6 +22,7 @@ export default function Navbar({ result, onSearchQuery }) {
       </div>
       <div>
         <input
+          ref={searchRef}
           type="text"
           placeholder="Search movies..."
           className="shadow bg-gray-700 px-6 py-2 rounded-lg placeholder:text-gray-100 border-none outline-none min-w-80"

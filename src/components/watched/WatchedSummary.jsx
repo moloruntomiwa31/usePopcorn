@@ -1,6 +1,5 @@
 export default function WatchedSummary({ watchedMovies }) {
   const totalMovies = watchedMovies.length;
-  console.log(watchedMovies);
   return (
     <div className="grid gap-1 bg-gray-800 p-4 rounded-lg mb-4">
       <h2 className="font-bold uppercase">Movies you watched</h2>
