@@ -31,7 +31,7 @@ export default function ActiveMovie({
     const fetchMovies = async () => {
       try {
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&t=${movie.Title}`
+          `https://www.omdbapi.com/?apikey=${KEY}&t=${movie.Title}`
         );
         const data = await res.json();
         if (data && data.Response === "True") {
