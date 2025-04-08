@@ -6,19 +6,21 @@ import { useState, useEffect } from "react";
 import ActiveMovie from "./components/active/ActiveMovie";
 import Loader from "./components/Loader";
 import Error from "./components/Error";
-const KEY = "9b8d44a4";
+import useMovies from "./hooks/useMovies";
+import useLocalStorageState from "./hooks/useLocalStorageState";
 
 export default function App() {
   // State variables
   const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  //fetch movies on render
+  const { movies, setMovies, loading, error } = useMovies(query);
 
-  const [watchedMovies, setWatchedMovies] = useState(() => {
-    const storedMovies = localStorage.getItem("watchedMovies");
-    return storedMovies ? JSON.parse(storedMovies) : [];
-  });
+  // Local storage state for watched movies
+  // Use custom hook to manage local storage state for watched movies
+  const [watchedMovies, setWatchedMovies] = useLocalStorageState(
+    [],
+    "watchedMovies"
+  );
   const [activeMovie, setActiveMovie] = useState(null);
   const [movieRating, setMovieRating] = useState(activeMovie?.userRating || 0);
   // Reset movieRating when activeMovie changes
@@ -61,36 +63,6 @@ export default function App() {
     }
     setActiveMovie(null);
   };
-
-  useEffect(() => {
-    localStorage.setItem("watchedMovies", JSON.stringify(watchedMovies));
-  }, [watchedMovies]);
-
-  //fetch movies on render
-  useEffect(() => {
-    setLoading(true);
-    const fetchMovies = async () => {
-      try {
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-        );
-        const data = await res.json();
-        if (data.Search) {
-          const updatedMovies = data.Search.map((movie) => ({
-            ...movie,
-            id: Math.random() * 1000, 
-            watched: false,
-          }));
-          setMovies(updatedMovies);
-        }
-      } catch (e) {
-        setError("An error occurred while fetching movies");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMovies();
-  }, [query]);
 
   return (
     <div className="bg-gray-950">

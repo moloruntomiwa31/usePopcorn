@@ -1,11 +1,11 @@
 export default function WatchedMovie({ movie, onRemoveFromWatchlist }) {
   return (
-    <div className="relative flex items-center gap-4 shadow rounded-lg px-8 py-10 bg-gray-800 mb-4">
-      <div className="flex items-start gap-4">
+    <div className="relative flex items-center gap-4 shadow rounded-lg px-8 py-4 bg-gray-800 mb-4">
+      <div className="flex items-center gap-4">
         <img
           src={movie.Poster}
           alt={movie.Title}
-          className="w-[100px] h-auto rounded-lg mb-4"
+          className="w-[100px] h-auto rounded-lg"
         />
         <div>
           <h2 className="text-lg font-bold">{movie.Title}</h2>
