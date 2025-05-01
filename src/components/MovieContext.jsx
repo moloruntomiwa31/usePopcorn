@@ -4,7 +4,7 @@ import useMovies from "../hooks/useMovies";
 
 const MoviesContext = createContext();
 
-export default function MovieContext({ children }) {
+export default function MovieProvider({ children }) {
   // State variables
   const [query, setQuery] = useState("");
   //fetch movies on render
