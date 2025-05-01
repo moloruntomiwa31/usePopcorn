@@ -1,7 +1,9 @@
 import WatchedMovie from "./WatchedMovie";
 import WatchedSummary from "./WatchedSummary";
+import { useMovieContext } from "../MovieContext";
 
-export default function WatchedBox({ watchedMovies, onRemoveFromWatchlist }) {
+export default function WatchedBox() {
+  const { watchedMovies, updateWatchlistStatus } = useMovieContext();
   return (
     <>
       {watchedMovies.length > 0 ? (
@@ -11,7 +13,9 @@ export default function WatchedBox({ watchedMovies, onRemoveFromWatchlist }) {
             <WatchedMovie
               key={movie.id}
               movie={movie}
-              onRemoveFromWatchlist={onRemoveFromWatchlist}
+              onRemoveFromWatchlist={() =>
+                updateWatchlistStatus(movie.id, false)
+              }
             />
           ))}
         </>

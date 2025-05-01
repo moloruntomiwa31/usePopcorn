@@ -25,9 +25,8 @@ export default function WatchedMovie({ movie, onRemoveFromWatchlist }) {
     </div>
   </div>
 
-  {/* Remove Button */}
   <button
-    className="absolute top-3 right-3 w-7 h-7 grid place-content-center bg-red-700 text-white rounded-full shadow hover:bg-red-600 transition duration-300 hover:scale-105"
+    className="absolute top-3 right-3 w-7 h-7 grid place-content-center bg-red-700 cursor-pointer text-white rounded-full shadow hover:bg-red-600 transition duration-300 hover:scale-105"
     onClick={() => onRemoveFromWatchlist(movie.id)}
     aria-label={`Remove ${movie.Title} from watchlist`} 
   >

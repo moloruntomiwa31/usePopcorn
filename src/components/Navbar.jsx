@@ -1,15 +1,18 @@
 import { useState, useRef, useEffect } from "react";
+import { useMovieContext } from "./MovieContext";
 
-export default function Navbar({ result, onSearchQuery }) {
+export default function Navbar() {
   const [search, setSearch] = useState("");
   const searchRef = useRef(null);
+  const { movies, setQuery } = useMovieContext();
+
   useEffect(() => {
     searchRef.current.focus();
   }, []);
 
   function handleChange(e) {
     setSearch(e.target.value);
-    onSearchQuery(e.target.value);
+    setQuery(e.target.value);
   }
 
   return (
@@ -31,7 +34,7 @@ export default function Navbar({ result, onSearchQuery }) {
         />
       </div>
       <div className="text-center md:text-right min-w-[100px] flex-shrink-0">
-        <p className="text-sm">Found {result} results</p>
+        <p className="text-sm">Found {movies.length} results</p>
       </div>
     </nav>
   );

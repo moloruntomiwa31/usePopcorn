@@ -1,10 +1,10 @@
-export default function Error({message}) {
+import { useMovieContext } from "./MovieContext";
+
+export default function Error() {
+  const { error } = useMovieContext();
   return (
     <div>
-      <p className="text-center text-red-500">{message}</p>
-      <p className="text-center text-red-500">
-        Please check your internet connection or try again later.
-      </p>
+      <p className="text-center text-red-500">{error}</p>
     </div>
   );
 }

@@ -5,24 +5,25 @@ import Error from "../Error";
 import ActiveMovieDetails from "./ActiveMovieDetails";
 import Loader from "../Loader";
 const KEY = "9b8d44a4";
+import { useMovieContext } from "../MovieContext";
 
-export default function ActiveMovie({
-  movie,
-  movieRating,
-  onSetRating,
-  onNoActiveMovie,
-  onAddToWatchlist,
-  onRemoveFromWatchlist,
-  onReplaceMovie,
-}) {
+export default function ActiveMovie() {
+  const {
+    activeMovie: movie,
+    movieRating,
+    handleRating,
+    setActiveMovie,
+    updateWatchListStatus,
+    setMovies,
+  } = useMovieContext();
   //states
   const [currentMovie, setCurrentMovie] = useState(movie);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   //dispatch rating to parent component
-  const handleRating = (newRating) => {
-    onSetRating(newRating);
+  const handleSetRating = (newRating) => {
+    handleRating(newRating);
   };
 
   //fetch movie details when active movie changes
@@ -41,7 +42,9 @@ export default function ActiveMovie({
             watched: movie.watched,
           };
           setCurrentMovie(updatedMovie);
-          onReplaceMovie(updatedMovie);
+          setMovies((prevMovies) =>
+            prevMovies.map((m) => (m.id === movie.id ? updatedMovie : m))
+          );
         } else {
           setError("Movie not found or invalid response");
         }
@@ -68,7 +71,7 @@ export default function ActiveMovie({
       <div className="relative flex items-center gap-4 shadow rounded-lg px-8 py-10 bg-gray-800">
         <button
           className="w-8 h-8 grid place-content-center absolute top-0 left-4 bg-gray-700 px-4 py-2 rounded-full shadow-md hover:bg-gray-600 transition duration-300 hover:scale-105 hover:shadow-lg hover:cursor-pointer"
-          onClick={onNoActiveMovie}
+          onClick={() => setActiveMovie(null)}
         >
           ⬅️
         </button>
@@ -88,7 +91,7 @@ export default function ActiveMovie({
             key={movie}
             maxRating={10}
             rating={movieRating}
-            onSetMovieRating={handleRating}
+            onSetMovieRating={handleSetRating}
           />
           <button
             className={`text-white px-4 py-2 rounded-full mt-4 mx-auto block transition duration-300 hover:scale-105 hover:shadow-lg hover:cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed ${
@@ -98,8 +101,8 @@ export default function ActiveMovie({
             }`}
             onClick={
               movie.watched
-                ? () => onRemoveFromWatchlist(movie.id)
-                : () => onAddToWatchlist(movie.id)
+                ? () => updateWatchListStatus(movie.id, false)
+                : () => updateWatchListStatus(movie.id, true)
             }
             disabled={movieRating === 0}
           >
